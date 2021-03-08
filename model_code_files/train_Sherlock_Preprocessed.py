@@ -9,7 +9,6 @@ import tensorflow as tf
 
 import mySherlock_model_helper
 
-from sherlock.features.preprocessing import prepare_feature_extraction
 '''
 from sherlock import helpers
 from sherlock.features.preprocessing import extract_features, convert_string_lists_to_lists, prepare_feature_extraction
@@ -21,7 +20,7 @@ from sherlock.deploy.predict_sherlock import predict_sherlock
 
 #Get needed data
 #helpers.download_data()
-prepare_feature_extraction()
+#prepare_feature_extraction()
 
 #Read parquet data files in at pd dataframe
 my_X_train = pd.read_parquet('../data/data/processed/X_train.parquet')
