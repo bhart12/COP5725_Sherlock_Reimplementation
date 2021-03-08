@@ -36,10 +36,10 @@ y_validate_subset = my_y_val.head(n=2900)
 X_train = my_X_train.head(n=2900)
 X_validation = my_X_val.head(n=2900)
 
-mySherlock_model_helper.train_sherlock(X_train, y_train_subset, X_validation, y_train_subset, model_name='retrained_sherlock_2900_preproc', False);
+mySherlock_model_helper.train_sherlock(X_train, y_train_subset, X_validation, y_validate_subset, model_name='retrained_sherlock_2900_preproc', new_model_flag=False);
 
 #train_sherlock(X_train, y_train_subset, X_validation, y_train_subset, nn_id=model_name);
 
-#train_sherlock(X_train.head(n=1450), y_train_subset.head(n=1450), X_validation.head(n=1450), y_train_subset.head(n=1450), nn_id='retrained_sherlock_2900halves_preproc_');
-#train_sherlock(X_train.tail(n=1450), y_train_subset.tail(n=1450), X_validation.tail(n=1450), y_train_subset.tail(n=1450), nn_id='retrained_sherlock_2900halves_preproc_');
+#train_sherlock(X_train.head(n=1450), y_train_subset.head(n=1450), X_validation.head(n=1450), y_validate_subset.head(n=1450), model_name='retrained_sherlock_2900halves_preproc_', new_model_flag=False);
+#train_sherlock(X_train.tail(n=1450), y_train_subset.tail(n=1450), X_validation.tail(n=1450), y_validate_subset.tail(n=1450), model_name='retrained_sherlock_2900halves_preproc_', new_model_flag=True);
 print("Model trained and saved.")
