@@ -75,7 +75,15 @@ def create_sherlock_model(model_name: str, with_weights: bool):
     file.close()
 
     if with_weights:
+        file = open(f"../models/{model_name}_model.json", "r")
+        sherlock_model = model_from_json(file.read())
+        file.close()
+
         sherlock_model.load_weights(f"../models/{model_name}_weights.h5")
+    else:
+        file = open(f"../models/sherlock_model.json", "r")
+        sherlock_model = model_from_json(file.read())
+        file.close()
 
     sherlock_model.compile(
         optimizer=tf.keras.optimizers.Adam(lr=lr),
@@ -124,6 +132,7 @@ def train_sherlock(
     X_val_values: pd.DataFrame,
     y_val_values: list,
     model_name: str,
+    new_model_flag: bool,
 ):
     """Train weights of sherlock model from existing NN architecture.
 
@@ -139,6 +148,9 @@ def train_sherlock(
         Validation labels.
     model_name
         Identifier for retrained model.
+    new_model_flag
+        False indicates to create new model from scratch based on ../models/sherlock_model.json
+        while True indicates to reopen already existing model. (Trained model must already exits if True)
     """
 
     if model_name == "sherlock":
@@ -150,7 +162,7 @@ def train_sherlock(
 
     feature_cols = get_processed_feature_category_dicts()
     y_train_categories, y_val_categories = _convert_list_of_labels_to_categorical_label_encodings(y_train_values, y_val_values, model_name)
-    sherlock_model, callbacks = create_sherlock_model(model_name, False)
+    sherlock_model, callbacks = create_sherlock_model(model_name, new_model_flag)
 
     print("Successfully loaded and compiled model, now fitting model on data.")
     print("My file training!")

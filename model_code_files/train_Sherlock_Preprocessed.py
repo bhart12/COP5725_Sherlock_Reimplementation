@@ -36,7 +36,7 @@ y_validate_subset = my_y_val.head(n=2900)
 X_train = my_X_train.head(n=2900)
 X_validation = my_X_val.head(n=2900)
 
-mySherlock_model_helper.train_sherlock(X_train, y_train_subset, X_validation, y_train_subset, model_name='retrained_sherlock_2900_preproc');
+mySherlock_model_helper.train_sherlock(X_train, y_train_subset, X_validation, y_train_subset, model_name='retrained_sherlock_2900_preproc', False);
 
 #train_sherlock(X_train, y_train_subset, X_validation, y_train_subset, nn_id=model_name);
 
