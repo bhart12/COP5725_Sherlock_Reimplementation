@@ -32,10 +32,8 @@ def create_sherlock_model(model_name: str, with_weights: bool):
     lr = 0.0001
     callbacks = [EarlyStopping(monitor="val_loss", patience=5)]
 
-    #Maybe change this to model_name.json
-    file = open(f"../models/sherlock_model.json", "r")
-    sherlock_model = model_from_json(file.read())
-    file.close()
+    #Declare model variable
+    sherlock_model = None
 
     if with_weights:
         #Open previously trained model
