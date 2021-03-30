@@ -8,7 +8,6 @@ from tensorflow import keras
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.models import model_from_json
 
-#from sherlock.deploy import model_helpers
 
 
 def create_sherlock_model(model_name: str, with_weights: bool):
@@ -19,7 +18,7 @@ def create_sherlock_model(model_name: str, with_weights: bool):
     model_name
         Identifier for retrained model.
     with_weights
-        Whether to populate the model with trained weights, or start as untrained.
+        Whether to populate the model with trained weights, or start with new untrained model.
 
     Returns
     -------
@@ -191,7 +190,7 @@ def train_sherlock(
     model_name
         Identifier for retrained model.
     new_model_flag
-        False indicates to create new model from scratch based on ../models/sherlock_model.json
+        False indicates to create new model from scratch
         while True indicates to reopen already existing model. (Trained model must already exits if True)
     """
 
@@ -234,3 +233,44 @@ def train_sherlock(
     _save_trained_model(sherlock_model, model_name)
 
     print('Retrained Sherlock.')
+
+
+def predict_sherlock(X_pred_values: pd.DataFrame, model_name: str) -> np.array:
+    """Use sherlock model to generate predictions for X.
+
+    Parameters
+    ----------
+    X_pred_values
+        Test data to to get predictions for
+    model_name
+        Identifier of a trained model to use for generating predictions.
+
+    Returns
+    -------
+    Array with predictions for X.
+    """
+    #Get model based off of model_name
+    sherlock_model, callbacks = create_sherlock_model(model_name, True)
+    #Get feature names by category in dict
+    feature_column_names = get_processed_feature_category_dicts()
+
+    #Predict labels
+    y_predictions = sherlock_model.predict(
+        [
+            np.asarray(X_pred_values[feature_column_names['char']].values).astype(np.float32),
+            np.asarray(X_pred_values[feature_column_names['word']].values).astype(np.float32),
+            np.asarray(X_pred_values[feature_column_names['par']].values).astype(np.float32),
+            np.asarray(X_pred_values[feature_column_names['rest']].values).astype(np.float32)
+        ]
+    )
+
+    #Use LabelEncoder to convert y_pred to semantic labels
+    y_pred_int = np.argmax(y_predictions, axis=1)
+    encoder = LabelEncoder()
+    encoder.classes_ = np.load(
+        f"../sherlock/deploy/classes_{model_name}.npy",
+        allow_pickle=True
+    )
+    y_predictions = encoder.inverse_transform(y_pred_int)
+
+    return y_predictions
