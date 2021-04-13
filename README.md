@@ -17,3 +17,5 @@ In order to get the data to train the model, just run "python3 data_downloader.p
 Now in order to train the data, just run "python3 train_Sherlock_Preprocessed.py" in the "/model_code_files" directory. This will train the model on the downloaded data and save the model in the "/model" directory
 
 In order to test the trained model, just run "python3 predict_Sherlock_Preprocessed.py" in the "/model_code_files" directory.
+
+train_column_vectors.py and predict_vectors.py contain the manipulated neural networks to train one feature column at a time and use those to predict and find the F1 - scores. 
